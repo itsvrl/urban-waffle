@@ -1,0 +1,26 @@
+version: "3"
+
+networks:
+  security-net:
+    external: false
+
+volumes:
+  nodered-s3:
+    driver: local
+
+services:
+  server:
+    image: nodered/node-red:3.0.2
+    container_name: node-red
+    environment:
+      - USER_UID=$USER_UID
+      - USER_GID=$USER_GID
+    restart: always
+    networks:
+      - security-net
+    volumes:
+      - nodered-s3:/data
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - "1880:1880"
